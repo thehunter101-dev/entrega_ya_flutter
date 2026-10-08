@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/models.dart';
 import '../providers/app_state.dart';
-import 'public_tracking_view.dart';
+import 'public/public_tracking_view.dart';
 import 'admin/admin_dashboard.dart';
 import 'dispatcher/dispatcher_dashboard.dart';
 import 'driver/driver_dashboard.dart';
@@ -203,6 +203,77 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                                   ),
                                 );
                               }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Direct Quick-Login Action Buttons Card
+                    Card(
+                      elevation: 2,
+                      color: Colors.blue[900],
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Row(
+                              children: [
+                                Icon(Icons.flash_on, color: Colors.amber, size: 24),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Ingreso Rápido de Demo (1 Clic)',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            const Text(
+                              'Acceda instantáneamente con el rol seleccionado para la prueba de 5 minutos:',
+                              style: TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                            const SizedBox(height: 16),
+                            Wrap(
+                              spacing: 12,
+                              runSpacing: 12,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: admins.isEmpty ? null : () => _navigateToDashboard(context, admins.first),
+                                  icon: const Icon(Icons.admin_panel_settings, size: 18),
+                                  label: const Text('Entrar como Admin'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.amber[700],
+                                    foregroundColor: Colors.black,
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: dispatchers.isEmpty ? null : () => _navigateToDashboard(context, dispatchers.first),
+                                  icon: const Icon(Icons.corporate_fare, size: 18),
+                                  label: const Text('Entrar como Operativo'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.blue[900],
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: drivers.isEmpty ? null : () => _navigateToDashboard(context, drivers.first),
+                                  icon: const Icon(Icons.local_shipping, size: 18),
+                                  label: const Text('Entrar como Chofer'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green[600],
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

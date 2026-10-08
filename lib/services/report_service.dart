@@ -1,38 +1,42 @@
+import 'package:excel/excel.dart' as ex;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:excel/excel.dart' as ex;
 import 'package:printing/printing.dart';
+
 import '../models/models.dart';
 import 'file_saver.dart';
 
 class ReportService {
   static Future<void> exportPackagesToExcel(List<PackageModel> packages, String companyName) async {
     var excel = ex.Excel.createExcel();
-    // Remove default sheet
+
     excel.rename('Sheet1', 'Reporte de Paquetes');
     var sheet = excel['Reporte de Paquetes'];
 
-    // Header styling
+    // Header info
     sheet.appendRow([
-      ex.CellValue.withValue('REPORTE DE PAQUETES - $companyName'),
+      ex.TextCellValue('Reporte General de Paquetes - EntregaYa'),
     ]);
     sheet.appendRow([
-      ex.CellValue.withValue('Generado el: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}'),
+      ex.TextCellValue('Empresa: $companyName'),
+    ]);
+    sheet.appendRow([
+      ex.TextCellValue('Fecha de Generación: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}'),
     ]);
     sheet.appendRow([]); // Empty row
 
     // Table Headers
     sheet.appendRow([
-      ex.CellValue.withValue('Código de Tracking'),
-      ex.CellValue.withValue('Remitente'),
-      ex.CellValue.withValue('Destinatario'),
-      ex.CellValue.withValue('Teléfono Dest.'),
-      ex.CellValue.withValue('Dirección de Entrega'),
-      ex.CellValue.withValue('Ciudad'),
-      ex.CellValue.withValue('Estado'),
-      ex.CellValue.withValue('Chofer ID'),
-      ex.CellValue.withValue('Fecha Entrega/Fallo'),
-      ex.CellValue.withValue('Motivo de Fallo/Receptor'),
+      ex.TextCellValue('Código de Tracking'),
+      ex.TextCellValue('Remitente'),
+      ex.TextCellValue('Destinatario'),
+      ex.TextCellValue('Teléfono Dest.'),
+      ex.TextCellValue('Dirección de Entrega'),
+      ex.TextCellValue('Ciudad'),
+      ex.TextCellValue('Estado'),
+      ex.TextCellValue('Chofer ID'),
+      ex.TextCellValue('Fecha Entrega/Fallo'),
+      ex.TextCellValue('Motivo de Fallo/Receptor'),
     ]);
 
     for (var p in packages) {
@@ -48,16 +52,16 @@ class ReportService {
       }
 
       sheet.appendRow([
-        ex.CellValue.withValue(p.trackingCode),
-        ex.CellValue.withValue(p.senderName),
-        ex.CellValue.withValue(p.receiverName),
-        ex.CellValue.withValue(p.receiverPhone),
-        ex.CellValue.withValue(p.deliveryAddress),
-        ex.CellValue.withValue(p.city),
-        ex.CellValue.withValue(p.status.name.toUpperCase()),
-        ex.CellValue.withValue(p.driverId ?? 'No asignado'),
-        ex.CellValue.withValue(dateStr),
-        ex.CellValue.withValue(secondaryInfo),
+        ex.TextCellValue(p.trackingCode),
+        ex.TextCellValue(p.senderName),
+        ex.TextCellValue(p.receiverName),
+        ex.TextCellValue(p.receiverPhone),
+        ex.TextCellValue(p.deliveryAddress),
+        ex.TextCellValue(p.city),
+        ex.TextCellValue(p.status.name.toUpperCase()),
+        ex.TextCellValue(p.driverId ?? 'No asignado'),
+        ex.TextCellValue(dateStr),
+        ex.TextCellValue(secondaryInfo),
       ]);
     }
 
@@ -98,16 +102,16 @@ class ReportService {
             pw.Header(
               level: 0,
               child: pw.Row(
-                mainpw: pw.MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('EntregaYa - Reporte Ejecutivo', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
-                  pw.Text(companyName, style: pw.TextStyle(color: PdfColors.grey700, fontSize: 12)),
+                  pw.Text(companyName, style: const pw.TextStyle(color: PdfColors.grey700, fontSize: 12)),
                 ],
               ),
             ),
             pw.SizedBox(height: 10),
             pw.Row(
-              mainpw: pw.MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Total Paquetes: ${packages.length}', style: const pw.TextStyle(fontSize: 10)),
                 pw.Text('Generado el: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}', style: const pw.TextStyle(fontSize: 10)),
@@ -132,7 +136,7 @@ class ReportService {
             ),
             pw.SizedBox(height: 20),
             pw.Text(
-              'Nota: Este documento es un reporte generado automáticamente por el sistema EntregaYa. Para ver firmas digitales completas u otra documentación de respaldo, consulte la plataforma en línea.',
+              'Nota: Este documento es un reporte generado automáticamente por el sistema EntregaYa.',
               style: pw.TextStyle(fontSize: 8, fontStyle: pw.FontStyle.italic, color: PdfColors.grey600),
             )
           ];
@@ -142,7 +146,6 @@ class ReportService {
 
     final bytes = await pdf.save();
     
-    // Save locally or use printing package to preview/print
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => bytes,
       name: 'Reporte_Entregas_${companyName.replaceAll(' ', '_')}.pdf',
@@ -159,10 +162,10 @@ class ReportService {
         build: (pw.Context context) {
           final df = (DateTime d) => '${d.day}/${d.month}/${d.year}';
           return pw.Column(
-            crosspw: pw.CrossAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Row(
-                mainpw: pw.MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('EntregaYa', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 24, color: PdfColors.blue900)),
                   pw.Text('DETALLE DE LIQUIDACIÓN', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14, color: PdfColors.grey700)),
@@ -202,18 +205,18 @@ class ReportService {
 
               pw.SizedBox(height: 50),
               pw.Row(
-                mainpw: pw.MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Column(
                     children: [
-                      pw.Container(width: 150, border: const pw.Border(top: pw.BorderSide(width: 1, color: PdfColors.black))),
+                      pw.Container(width: 150, decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(width: 1, color: PdfColors.black)))),
                       pw.SizedBox(height: 4),
                       pw.Text('Firma del Chofer', style: const pw.TextStyle(fontSize: 10)),
                     ]
                   ),
                   pw.Column(
                     children: [
-                      pw.Container(width: 150, border: const pw.Border(top: pw.BorderSide(width: 1, color: PdfColors.black))),
+                      pw.Container(width: 150, decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(width: 1, color: PdfColors.black)))),
                       pw.SizedBox(height: 4),
                       pw.Text('Firma de Aprobación', style: const pw.TextStyle(fontSize: 10)),
                     ]

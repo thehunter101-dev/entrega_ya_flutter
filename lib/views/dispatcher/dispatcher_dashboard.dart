@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../models/models.dart';
 import '../../providers/app_state.dart';
 import '../../services/report_service.dart';
-import '../public_tracking_view.dart';
+import '../public/public_tracking_view.dart';
 
 class DispatcherDashboard extends StatefulWidget {
   const DispatcherDashboard({super.key});
@@ -443,7 +443,9 @@ class _DispatcherDashboardState extends State<DispatcherDashboard> with SingleTi
           flex: 3,
           child: Container(
             padding: const EdgeInsets.all(16),
-            border: Border(right: BorderSide(color: Colors.grey[200]!)),
+            decoration: BoxDecoration(
+              border: Border(right: BorderSide(color: Colors.grey[200]!)),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
